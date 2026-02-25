@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Jobs page is hidden from nav when empty (via conditional nav rendering)
+const jobs: any[] = []; // Populated from jobs config when available
+---
+
+<Base
+  title="Jobs"
+  description="AI industry job listings in The LLM Report."
+>
+  <div class="container">
+    <h1>Jobs</h1>
+    {jobs.length === 0 ? (
+      <p>No job listings at this time. <a href="/subscribe">Subscribe</a> to be notified when job listings are added.</p>
+    ) : (
+      <ul>
+        {jobs.map((job: any) => (
+          <li>
+            <a href={job.url}>{job.title}</a> — {job.company}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>

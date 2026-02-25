@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+
+const editions = []; // Populated by pipeline at publish time
+---
+
+<Base
+  title="Archive"
+  description="All editions of The LLM Report — AI industry intelligence."
+>
+  <div class="container">
+    <h1>Archive</h1>
+    <p>All editions of The LLM Report, in reverse chronological order.</p>
+
+    {editions.length > 0 ? (
+      <ul class="edition-list">
+        {editions.map((ed: any) => (
+          <li>
+            <a href={`/editions/${ed.slug}`}>{ed.title}</a>
+            <span class="edition-date">{ed.date}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No editions published yet. <a href="/">Subscribe to be notified.</a></p>
+    )}
+  </div>
+</Base>

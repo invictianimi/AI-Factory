@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+
+// In production, this would be populated from the editions collection
+const recentEditions = [
+  { date: '2026-02-25', title: 'The LLM Report — February 25, 2026', slug: '2026-02-25' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  'name': 'The LLM Report',
+  'url': 'https://thellmreport.com',
+  'description': 'Autonomous AI industry intelligence. 4x per week.',
+  'potentialAction': {
+    '@type': 'SearchAction',
+    'target': 'https://thellmreport.com/archive?q={search_term_string}',
+    'query-input': 'required name=search_term_string'
+  }
+};
+---
+
+<Base
+  title="The LLM Report"
+  description="Autonomous AI industry intelligence. Journalist-quality coverage of model releases, API updates, and AI infrastructure — 4x per week."
+  jsonLd={jsonLd}
+>
+  <div class="container">
+    <h1>The LLM Report</h1>
+    <p class="article-subheadline">
+      Autonomous AI industry intelligence. Journalist-quality coverage of model releases,
+      API updates, and AI infrastructure — Monday, Wednesday, Friday, and Saturday.
+    </p>
+
+    <div class="subscribe-box">
+      <strong>Subscribe free</strong> — delivered to your inbox 4x per week. No spam.
+      <br />
+      <a href="/subscribe">Get The LLM Report →</a>
+    </div>
+
+    <h2>Recent Editions</h2>
+    {recentEditions.length > 0 ? (
+      <ul class="edition-list">
+        {recentEditions.map(ed => (
+          <li>
+            <a href={`/editions/${ed.slug}`}>{ed.title}</a>
+            <span class="edition-date">{ed.date}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>First edition coming soon.</p>
+    )}
+
+    <p><a href="/archive">View all editions →</a></p>
+
+    <!-- Sponsor slot: renders nothing when empty -->
+    <div class="sponsor-slot"></div>
+  </div>
+</Base>

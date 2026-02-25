@@ -80,3 +80,30 @@ Append-only. Never delete entries.
 ---
 
 **[INFO 2026-02-25T06:40:42+00:00]** Orchestrator import test passed
+
+## 2026-02-25 — Milestone 4: Editorial + Compliance Pipeline
+
+### Files Created
+- `projects/the-llm-report/pipeline/src/editorial/__init__.py`
+- `projects/the-llm-report/pipeline/src/editorial/editorial_agent.py`
+- `projects/the-llm-report/pipeline/src/editorial/compliance.py`
+- `projects/the-llm-report/pipeline/src/tests/test_milestone4.py`
+
+### Summary
+Built the editorial and compliance pipeline stages per NLSpec Section 5.5/5.6.
+
+**editorial_agent.py:**
+- `edit_article(story, llm_caller)` — KB-First Pattern (cache → vector → structured → LLM), converts AnalyzedStory → EditedArticle
+- `edit_batch(stories, llm_caller)` — batch editing with per-story error isolation
+- `assemble_newsletter(articles, date)` — full Markdown newsletter: overview → lead → standard → roundup → sign-off
+- Analysis section gated: only significance >= 7 with analysis_angles; always labelled "**Analysis:**"
+- Lead word targets: 80-200w (roundup), 300-600w (standard), 600-1000w (lead)
+
+**compliance.py:**
+- `check_compliance(article)` — checks first-person (excluding attributed quotes), promo phrases, emoji, bullet points, headline length, quotes >14 words, attribution heuristics
+- `rewrite_loop(article, llm_rewriter, max_loops=3)` — iterative rewrite until compliant or max attempts reached
+- Key fix: first-person check strips direct quoted speech before scanning — a journalist quoting a CEO saying "We believe..." is correctly not flagged
+
+### Test Results
+- 21/21 passed (100%) — exceeds 90% satisfaction gate
+- Scenarios 4.1–4.5 all passing with additional sub-tests per scenario

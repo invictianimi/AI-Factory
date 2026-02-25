@@ -1,207 +1,267 @@
 /* The LLM Report — Global Styles
-   System font stack only. No external font loading.
-   Content width: 680px. Line height: 1.7.
+   Design principle: Transparent utility. Every choice signals "AI-curated, human-useful."
+   Speed to insight beats editorial prestige.
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 :root {
-  --color-text: #1a1a1a;
-  --color-bg: #ffffff;
-  --color-muted: #666;
-  --color-border: #e0e0e0;
-  --color-accent: #1a1a8c;
-  --color-analysis-bg: #f8f8ff;
-  --color-analysis-border: #6666cc;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  --content-width: 680px;
-  --line-height: 1.7;
+  /* Neutral system */
+  --color-text:       #111111;
+  --color-text-2:     #555555;
+  --color-text-3:     #888888;
+  --color-bg:         #ffffff;
+  --color-bg-2:       #f7f7f9;
+  --color-border:     #e5e5e5;
+  --color-border-2:   #d0d0d0;
+
+  /* Single accent — used in exactly 3 places */
+  --color-accent:         #2436e8;
+  --color-accent-subtle:  #eef0ff;
+
+  /* Type */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-body:   17px;
+  --font-size-sm:     14px;
+  --font-size-xs:     12px;
+  --line-height:      1.65;
+  --content-width:    680px;
+  --wide-width:       860px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text: #e8e8e8;
-    --color-bg: #0f0f0f;
-    --color-muted: #999;
-    --color-border: #2a2a2a;
-    --color-accent: #8888ff;
-    --color-analysis-bg: #0f0f1a;
-    --color-analysis-border: #6666cc;
+    --color-text:       #ebebeb;
+    --color-text-2:     #999999;
+    --color-text-3:     #666666;
+    --color-bg:         #0f0f0f;
+    --color-bg-2:       #1a1a1a;
+    --color-border:     #2a2a2a;
+    --color-border-2:   #383838;
+    --color-accent:         #4d63ff;
+    --color-accent-subtle:  #1a1e3a;
   }
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  font-size: 17px;
-  -webkit-text-size-adjust: 100%;
-}
+html { font-size: var(--font-size-body); -webkit-text-size-adjust: 100%; }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font);
   color: var(--color-text);
   background: var(--color-bg);
   line-height: var(--line-height);
-  margin: 0;
-  padding: 0;
 }
 
+/* ── Layout ── */
 .container {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
+}
+.container--wide {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
 }
 
-/* Header */
+/* ── Header ── */
 .site-header {
-  border-bottom: 2px solid var(--color-border);
-  padding: 1rem 0;
-  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.875rem 0;
+  margin-bottom: 2.5rem;
 }
-
 .site-header .container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
 }
-
 .site-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--color-text);
   text-decoration: none;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
-
+.site-title span {
+  color: var(--color-accent);
+}
 .site-nav {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
-
 .site-nav a {
-  color: var(--color-muted);
+  color: var(--color-text-2);
   text-decoration: none;
+  transition: color 0.15s;
 }
-
-.site-nav a:hover {
-  color: var(--color-text);
+.site-nav a:hover { color: var(--color-text); }
+.site-nav .nav-cta {
+  background: var(--color-accent);
+  color: #fff !important;
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  font-weight: 500;
 }
+.site-nav .nav-cta:hover { opacity: 0.88; }
 
-/* Footer */
+/* ── Footer ── */
 .site-footer {
   border-top: 1px solid var(--color-border);
-  margin-top: 3rem;
+  margin-top: 4rem;
   padding: 1.5rem 0;
-  font-size: 0.85rem;
-  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-3);
+}
+.site-footer a { color: var(--color-text-2); text-decoration: none; }
+.site-footer a:hover { color: var(--color-text); }
+
+/* ── Typography ── */
+h1 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.25; }
+h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; margin-top: 2rem; margin-bottom: 0.5rem; }
+h3 { font-size: 1rem; font-weight: 600; line-height: 1.4; margin-top: 1.5rem; margin-bottom: 0.35rem; }
+p  { margin-bottom: 1rem; }
+a  { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Read-time badge — accent use #1 ── */
+.read-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
 }
 
-/* Typography */
-h1, h2, h3, h4 {
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+/* ── Topic tag ── */
+.topic-tag {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-2);
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  text-transform: lowercase;
 }
 
-h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-h2 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.5rem; }
-h3 { font-size: 1.15rem; }
-
-p { margin: 0 0 1rem; }
-
-a { color: var(--color-accent); }
-
-/* Article styles */
-.article-meta {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+/* ── AI label bar ── */
+.ai-label-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-3);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 1.75rem;
 }
+.ai-label-bar strong { color: var(--color-text-2); }
 
-.article-subheadline {
-  font-size: 1.1rem;
-  color: var(--color-muted);
-  font-weight: 400;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-}
-
-/* Analysis section */
-.analysis-section {
-  background: var(--color-analysis-bg);
-  border-left: 3px solid var(--color-analysis-border);
-  padding: 1rem 1.25rem;
-  margin: 2rem 0;
-  border-radius: 0 4px 4px 0;
-}
-
-.analysis-section .analysis-label {
-  font-weight: 700;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-analysis-border);
-  margin-bottom: 0.5rem;
-}
-
-/* Edition list */
+/* ── Edition cards ── */
 .edition-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1.5rem 0;
 }
-
-.edition-list li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--color-border);
+.edition-card {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-bg);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background 0.1s;
 }
-
-.edition-list .edition-date {
-  font-size: 0.85rem;
-  color: var(--color-muted);
+.edition-card:hover { background: var(--color-bg-2); text-decoration: none; }
+.edition-card-title { font-weight: 500; font-size: 0.95rem; }
+.edition-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-3);
   white-space: nowrap;
 }
 
-/* Subscribe form */
-.subscribe-box {
-  background: var(--color-analysis-bg);
-  border: 1px solid var(--color-border);
+/* ── Analysis callout — accent use #2 ── */
+.analysis-block {
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-bg-2);
+  padding: 0.85rem 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.analysis-block .analysis-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  margin-bottom: 0.4rem;
+}
+
+/* ── Subscribe CTA — accent use #3 ── */
+.subscribe-cta {
+  background: var(--color-accent-subtle);
+  border: 1px solid var(--color-accent);
   border-radius: 6px;
   padding: 1.25rem;
   margin: 2rem 0;
   font-size: 0.95rem;
 }
+.subscribe-cta a {
+  font-weight: 600;
+  color: var(--color-accent);
+}
 
-/* Sources footer */
+/* ── Section header ── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.section-header h2 { margin-top: 0; }
+.section-header a { font-size: var(--font-size-sm); color: var(--color-text-2); }
+
+/* ── Article body ── */
+.article-body p + p { margin-top: 0; }
+.article-body h2 { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
 .sources-footer {
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);
-  font-size: 0.85rem;
-  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-3);
 }
 
-/* Roundup items */
-.roundup-item {
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.roundup-item h3 {
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-/* Sponsor slot — renders nothing when empty */
+/* ── Utility ── */
+.text-muted { color: var(--color-text-2); }
+.text-xs    { font-size: var(--font-size-xs); }
+.text-sm    { font-size: var(--font-size-sm); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
 .sponsor-slot:empty { display: none; }
-
-/* Images */
-img { max-width: 100%; height: auto; }
+img { max-width: 100%; height: auto; loading: lazy; }

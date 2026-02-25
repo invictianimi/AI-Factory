@@ -1,0 +1,36 @@
+# Environment & secrets
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+.next/
+dist/
+
+# Data (large, regenerable)
+data/chroma/
+*.sqlite
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+proxy-data/
+
+# Logs (sync to GDrive, don't bloat git)
+logs/*.log
+!logs/.gitkeep

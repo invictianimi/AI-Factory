@@ -83,6 +83,11 @@ def publish_to_website(
 
     if not dry_run:
         try:
+            # Ensure git identity is set for this repo
+            subprocess.run(["git", "config", "user.email", "aifactory.ops@outlook.com"],
+                           cwd=str(ws_dir), capture_output=True, timeout=10)
+            subprocess.run(["git", "config", "user.name", "AI Factory"],
+                           cwd=str(ws_dir), capture_output=True, timeout=10)
             # Git add
             subprocess.run(
                 ["git", "add", str(file_path)],
@@ -101,15 +106,18 @@ def publish_to_website(
                     cwd=str(ws_dir), capture_output=True, text=True, timeout=10
                 )
                 commit_sha = sha_result.stdout.strip()
-            # Git push
+            # Git push — triggers Cloudflare Pages auto-deploy
             push_result = subprocess.run(
                 ["git", "push"],
                 cwd=str(ws_dir), capture_output=True, text=True, timeout=60
             )
             push_success = push_result.returncode == 0
+            if not push_success:
+                from orchestrator.as_built import log
+                log(f"Website push failed: {push_result.stderr[:200]}", level="WARNING")
         except (subprocess.SubprocessError, subprocess.TimeoutExpired) as e:
-            # Log error but don't crash — partial publish is better than no publish
-            pass
+            from orchestrator.as_built import log
+            log(f"Website publish error: {e}", level="WARNING")
 
     # Log to KB
     article_id = str(uuid.uuid4())

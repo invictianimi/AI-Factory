@@ -17,7 +17,7 @@ if [ -f "$REPO_ROOT/.env" ]; then
 fi
 
 # Check if already running
-if curl -s --max-time 2 "http://localhost:$LITELLM_PORT/health" > /dev/null 2>&1; then
+if curl -s --max-time 2 "http://localhost:$LITELLM_PORT/v1/models" > /dev/null 2>&1; then
   echo "[litellm] Proxy already running on port $LITELLM_PORT"
   exit 0
 fi
@@ -38,7 +38,7 @@ echo "[litellm] Proxy started (PID $!)"
 if [ "${1}" = "--wait" ]; then
   echo "[litellm] Waiting for proxy to be ready..."
   for i in $(seq 1 15); do
-    if curl -s --max-time 1 "http://localhost:$LITELLM_PORT/health" > /dev/null 2>&1; then
+    if curl -s --max-time 1 "http://localhost:$LITELLM_PORT/v1/models" > /dev/null 2>&1; then
       echo "[litellm] Proxy ready after ${i}s"
       exit 0
     fi

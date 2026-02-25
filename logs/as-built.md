@@ -181,3 +181,37 @@ Built the editorial and compliance pipeline stages per NLSpec Section 5.5/5.6.
 **[INFO 2026-02-25T11:00:52+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Newsletter draft created: 81ae6264-0653-4d4f-92b3-5ed1ac9119dd
 
 **[INFO 2026-02-25T11:00:52+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff] [cost:$0.0000]]** Pipeline run complete — Collected: 17 | Published: 0 | Errors: 5
+
+
+## 2026-02-25 — Bug Fix: Triage LLM Calls Failing (0 articles published)
+
+### Root Cause
+LiteLLM proxy was not running. `_call_triage_llm` tried to connect to `http://localhost:4000`, got connection refused → RuntimeError per item. `triage_batch` stops after `max_errors=3`, so all 17 collected articles remained untriaged (0 in all buckets → 0 published). Also: `litellm[proxy]` extras were not installed (missing `fastapi`), and the litellm config had a Docker path (`/app/data/litellm.db`) and `master_key` that prevented the proxy from starting cleanly.
+
+### Fixes Applied
+
+**`orchestrator/config/litellm_config.yaml`:**
+- Removed `database_url` (Docker path `/app/data/`, requires Prisma not installed)
+- Removed `master_key` (proxy is localhost-only; pipeline agents don't authenticate against it)
+
+**`scripts/start-litellm.sh`** (new):
+- Startup script — checks if proxy is running, starts it if not, waits for ready
+
+**`~/.config/systemd/user/litellm-factory.service`** (new):
+- User systemd service — auto-starts LiteLLM on login, restarts on failure
+- `loginctl enable-linger` enabled — service persists after logout (survives cron runs)
+
+**`scripts/run-pipeline.sh`:**
+- Added proxy health check before pipeline starts
+- Starts litellm-factory service via systemctl if not running
+- Falls back to start-litellm.sh if systemctl unavailable
+
+**`.venv` — `litellm[proxy]` installed:**
+- Was missing `fastapi` and other proxy deps; now installed
+
+### Validation
+- Triage test: "Anthropic releases Claude 5" → significance 9, category model-release, route lead ✓
+- LiteLLM proxy: running on :4000, all 7 models registered ✓
+- Systemd service: active (running) ✓
+
+**[INFO 2026-02-25 — Bug fix complete]** Next pipeline run will triage and publish real articles.

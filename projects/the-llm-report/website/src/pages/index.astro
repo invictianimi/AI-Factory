@@ -8,11 +8,17 @@ const editions = [
     slug: '2026-02-25',
     date: '2026-02-25',
     title: 'The LLM Report — February 25, 2026',
-    description: 'Factory launch edition. First real run coming Friday February 28.',
+    description: 'Factory launch edition. The autonomous pipeline is live. First real run coming Friday February 28.',
     readTime: '2 min',
     storyCount: 3,
   },
 ];
+
+const latest = editions[0];
+const past = editions.slice(1);
+
+// Parse date strings as noon UTC to avoid timezone day-shift on any server
+const parseDate = (d: string) => new Date(d + 'T12:00:00Z');
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -31,51 +37,89 @@ const jsonLd = {
   <div class="container">
 
     <!-- Hero -->
-    <div style="padding: 1.5rem 0 2rem;">
-      <h1 style="margin-bottom: 0.5rem;">The LLM Report</h1>
-      <p class="text-muted" style="font-size: 1.05rem; margin-bottom: 1.25rem;">
-        Autonomous AI industry intelligence. Model releases, API updates, and infrastructure — 4x per week.
+    <section class="hero">
+      <p class="hero-eyebrow">AI Industry Intelligence</p>
+      <h1 class="hero-title">What matters in AI,<br>without the noise.</h1>
+      <p class="hero-tagline">
+        Journalist-quality coverage of model releases, APIs, and infrastructure.
+        Produced autonomously, published 4&times; per week.
       </p>
-      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-        <a href="/subscribe" class="nav-cta" style="font-size: 0.95rem; padding: 0.5rem 1.1rem;">Subscribe free</a>
-        <span class="text-xs text-muted">AI-generated · <a href="/about">How it works</a></span>
+
+      <form
+        class="subscribe-form"
+        action="https://buttondown.com/api/emails/embed-subscribe/thellmreport"
+        method="post"
+        target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/thellmreport','popupwindow')"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+        />
+        <button type="submit">Subscribe free</button>
+      </form>
+      <p class="subscribe-note">Free &middot; 4&times; per week &middot; No spam &middot; Unsubscribe anytime</p>
+    </section>
+
+    <!-- Latest edition -->
+    {latest && (
+      <div>
+        <div class="section-header">
+          <h2>Latest edition</h2>
+        </div>
+        <a href={`/editions/${latest.slug}`} class="featured-edition">
+          <div class="featured-edition-eyebrow">
+            {parseDate(latest.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
+            {latest.storyCount && <span>&nbsp;&middot; {latest.storyCount} stories</span>}
+          </div>
+          <div class="featured-edition-title">{latest.title}</div>
+          {latest.description && (
+            <div class="featured-edition-desc">{latest.description}</div>
+          )}
+          <div class="featured-edition-footer">
+            {latest.readTime && <span class="read-time">{latest.readTime} read</span>}
+            <span class="edition-cta">Read this edition &rarr;</span>
+          </div>
+        </a>
       </div>
-    </div>
-
-    <!-- Recent editions -->
-    <div class="section-header">
-      <h2>Recent editions</h2>
-      <a href="/archive">All editions →</a>
-    </div>
-
-    {editions.length > 0 ? (
-      <ul class="edition-list">
-        {editions.map(ed => (
-          <li>
-            <a href={`/editions/${ed.slug}`} class="edition-card">
-              <div>
-                <div class="edition-card-title">{ed.title}</div>
-                {ed.description && (
-                  <div class="text-xs text-muted mt-1">{ed.description}</div>
-                )}
-              </div>
-              <div class="edition-card-meta">
-                {ed.readTime && <span class="read-time">⏱ {ed.readTime}</span>}
-                <span>{new Date(ed.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p class="text-muted">First edition coming Friday, February 28.</p>
     )}
 
-    <!-- Subscribe CTA -->
-    <div class="subscribe-cta" style="margin-top: 2rem;">
-      <strong>Get it in your inbox.</strong> <a href="/subscribe">Subscribe free</a> — AI-curated briefings, 4x per week.
-      No spam. Unsubscribe anytime.
-    </div>
+    {!latest && (
+      <div style="padding: 2rem 0;">
+        <p class="text-muted">First edition publishing Friday, February 28.</p>
+      </div>
+    )}
+
+    <!-- Past editions -->
+    {past.length > 0 && (
+      <div style="margin-top: 2.5rem;">
+        <div class="section-header">
+          <h2>Past editions</h2>
+          <a href="/archive">All editions &rarr;</a>
+        </div>
+        <ul class="edition-list">
+          {past.map(ed => (
+            <li>
+              <a href={`/editions/${ed.slug}`} class="edition-card">
+                <div>
+                  <div class="edition-card-title">{ed.title}</div>
+                  {ed.description && (
+                    <div class="text-xs text-muted mt-1">{ed.description}</div>
+                  )}
+                </div>
+                <div class="edition-card-meta">
+                  {ed.readTime && <span class="read-time">{ed.readTime}</span>}
+                  <span>{parseDate(ed.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
     <!-- Sponsor slot -->
     <div class="sponsor-slot"></div>

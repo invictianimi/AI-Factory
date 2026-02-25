@@ -112,3 +112,36 @@ Built the editorial and compliance pipeline stages per NLSpec Section 5.5/5.6.
 
 **[INFO 2026-02-25T07:58:00+00:00]** FACTORY BUILD COMPLETE — All 7 milestones pass. 100/100 scenarios (100%). First test edition produced at outputs/first-edition.md. Bridge operational (`factory status` returns valid output). Cron scheduled: Mon/Wed/Fri 05:00 UTC + Sat 06:00 UTC + Thu 02:00 UTC board review. Website built with Astro. Next: deploy to Cloudflare Pages, configure DNS, enable email auth.
 
+
+## 2026-02-25 — Website Design Overhaul
+
+**Action:** Redesigned website based on competitive research (The Rundown AI, Nate B. Jones, AI News).
+
+### Changes Made
+
+**`src/styles/global.css`** (full overhaul):
+- Added `DM Serif Display` (Google Fonts) as `--font-display` — editorial serif for headlines vs. startup-SaaS Inter-only
+- Shifted accent from `#2436e8` to `#4f46e5` (indigo-600) — differentiates from The Rundown's electric blue `#255BEE`; dark mode accent `#818cf8`
+- Added `--color-accent-hover: #4338ca` (indigo-700) for interactive states
+- Bumped `--content-width` from 680px → 720px for better homepage breathing room
+- Added 3px gradient top stripe on `.site-header::before` (indigo → violet) — editorial brand identity
+- Added `.hero` section styles: `padding: 3.5rem 0 3rem`, bottom border separator
+- Added `.hero-eyebrow` (small caps label with accent dot), `.hero-title` (DM Serif Display, 3.25rem, responsive to 2.25rem @ 600px), `.hero-tagline`
+- Added `.subscribe-form` with real email input + button (inline, stacks vertically @ 420px)
+- Added `.featured-edition` elevated card (8px border radius, hover accent border + shadow)
+- Improved `.edition-card` hover: left 3px accent border
+- Added `.article-body h1` in DM Serif Display (2.25rem) for edition pages
+
+**`src/layouts/Base.astro`**: Updated Google Fonts link to include DM Serif Display
+
+**`src/layouts/Edition.astro`**: Updated Google Fonts link to include DM Serif Display
+
+**`src/pages/index.astro`** (restructured):
+- New hero: `hero-eyebrow` + DM Serif Display `hero-title` ("What matters in AI, without the noise.") + `hero-tagline` + subscribe form + trust note
+- Buttondown embed form action wired to `https://buttondown.com/api/emails/embed-subscribe/thellmreport`
+- Featured latest edition as elevated card (above the past-editions list)
+- Past editions list only renders when > 1 editions exist
+- Date formatting: `parseDate()` helper using T12:00:00Z to prevent UTC day-shift bug in all timezones
+
+**Build:** 8 pages, 0 errors, 771ms.
+

@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+"""
+AI Factory — Boss CLI Tool
+Usage: factory <command> [options]
+       factory bridge  (interactive mode)
+Run `factory --help` for all commands.
+"""
+
+import sys
+import os
+
+# Add repo root to path
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+PROJECT_ROOT = os.path.join(REPO_ROOT, "projects", "the-llm-report")
+for p in [REPO_ROOT, PROJECT_ROOT]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+# Load .env
+env_file = os.path.join(REPO_ROOT, ".env")
+if os.path.exists(env_file):
+    with open(env_file) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, val = line.partition("=")
+                os.environ.setdefault(key.strip(), val.strip())
+
+os.environ.setdefault("HF_HOME", os.path.join(REPO_ROOT, ".hf_cache"))
+
+from bridge.cli_commands import main
+
+if __name__ == "__main__":
+    sys.exit(main())

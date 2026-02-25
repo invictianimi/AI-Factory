@@ -39,9 +39,9 @@ model_list:
       api_key: "os.environ/GOOGLE_API_KEY"
 
 # General settings
-general_settings:
-  master_key: "os.environ/LITELLM_MASTER_KEY"
-  database_url: "sqlite:////app/data/litellm.db"
+# No master_key — proxy runs on localhost only (internal factory use)
+# No database_url — no Prisma required; cost tracking handled by orchestrator/cost_logger.py
+general_settings: {}
 
 litellm_settings:
   # Budget enforcement

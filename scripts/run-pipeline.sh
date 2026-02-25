@@ -22,6 +22,23 @@ echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Pipeline starting: $RUN_TYPE" | tee -a "$
 
 source "$REPO_ROOT/.venv/bin/activate"
 
+# Ensure LiteLLM proxy is running (budget enforcement + model routing)
+if ! curl -s --max-time 2 "http://localhost:4000/v1/models" > /dev/null 2>&1; then
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] LiteLLM proxy not responding — starting..." | tee -a "$LOG_FILE"
+  systemctl --user start litellm-factory.service 2>/dev/null || \
+    bash "$REPO_ROOT/scripts/start-litellm.sh" --wait
+  # Wait up to 15s for proxy to be ready
+  for i in $(seq 1 15); do
+    if curl -s --max-time 1 "http://localhost:4000/v1/models" > /dev/null 2>&1; then
+      echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] LiteLLM proxy ready" | tee -a "$LOG_FILE"
+      break
+    fi
+    sleep 1
+  done
+else
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] LiteLLM proxy OK" | tee -a "$LOG_FILE"
+fi
+
 python3 "$REPO_ROOT/projects/the-llm-report/pipeline/run_pipeline.py" "$RUN_TYPE" 2>&1 | tee -a "$LOG_FILE"
 
 EXIT_CODE=${PIPESTATUS[0]}

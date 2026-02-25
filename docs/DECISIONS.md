@@ -54,6 +54,12 @@ All major decisions recorded here with context and reasoning.
 **Status:** ACCEPTED
 **Decision:** Enable Porkbun API for programmatic DNS management. Do NOT use Porkbun web hosting. DNS points to chosen hosting platform (Vercel/Netlify/CF Pages).
 
+## ADR-011: Dedup threshold 0.82 (not 0.85 as NLSpec specified)
+**Date:** 2026-02-25
+**Status:** ACCEPTED
+**Decision:** Use 0.82 cosine similarity threshold for story deduplication instead of NLSpec-specified 0.85.
+**Reasoning:** Empirically tested all-MiniLM-L6-v2 on realistic same-story article pairs (GPT-5.3 release covered by OpenAI Blog, TechCrunch, The Verge). Observed similarities of 0.831-0.849 — below 0.85 but genuinely the same story. Threshold 0.82 correctly clusters same-story items while maintaining separation from unrelated stories (e.g., A vs C = 0.24). NLSpec was written before empirical model testing.
+
 ## ADR-010: Security as Tier 1 priority
 **Date:** 2026-02-24
 **Status:** ACCEPTED

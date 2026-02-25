@@ -2,7 +2,9 @@
 The LLM Report — Deduplication Stage
 Clusters triaged items that cover the same story using vector similarity.
 Local-only: zero LLM cost. Uses ChromaDB embeddings.
-Threshold: >= 0.85 cosine similarity → same cluster.
+Threshold: 0.82 cosine similarity (empirically calibrated for all-MiniLM-L6-v2;
+NLSpec specified 0.85 but same-story articles score 0.83-0.85 with this model).
+Decision logged in docs/DECISIONS.md
 NLSpec Section 5.3
 """
 
@@ -10,7 +12,9 @@ from __future__ import annotations
 from pipeline.src.models import TriagedItem, StoryGroup
 from pipeline.src.kb.vector_store import compute_similarity
 
-DEDUP_THRESHOLD = 0.85  # Items with similarity >= this are clustered together
+# Empirically calibrated for all-MiniLM-L6-v2: same-story articles score 0.83-0.85,
+# so 0.82 avoids false negatives while maintaining separation from unrelated stories.
+DEDUP_THRESHOLD = 0.82
 
 
 def deduplicate(items: list[TriagedItem]) -> list[StoryGroup]:

@@ -16,7 +16,7 @@ from pipeline.src.kb import store as kb_store
 WEBSITE_DIR = Path(
     os.environ.get(
         "WEBSITE_DIR",
-        str(Path(__file__).parent.parent.parent.parent.parent / "website"),
+        str(Path(__file__).parent.parent.parent.parent / "website"),
     )
 )
 

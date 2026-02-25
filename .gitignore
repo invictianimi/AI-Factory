@@ -34,3 +34,10 @@ proxy-data/
 # Logs (sync to GDrive, don't bloat git)
 logs/*.log
 !logs/.gitkeep
+.env
+*.sqlite
+*.db
+__pycache__/
+node_modules/
+.venv/
+data/chroma/

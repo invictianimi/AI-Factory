@@ -1,0 +1,79 @@
+# AI Factory — LiteLLM Proxy Configuration
+# Budget caps enforced at proxy layer
+# All pipeline LLM calls routed through this proxy
+
+model_list:
+  - model_name: "claude-opus-4-6"
+    litellm_params:
+      model: "claude-opus-4-6"
+      api_key: "os.environ/ANTHROPIC_API_KEY"
+
+  - model_name: "claude-sonnet-4-5"
+    litellm_params:
+      model: "claude-sonnet-4-5"
+      api_key: "os.environ/ANTHROPIC_API_KEY"
+
+  - model_name: "claude-haiku-4-5"
+    litellm_params:
+      model: "claude-haiku-4-5"
+      api_key: "os.environ/ANTHROPIC_API_KEY"
+
+  - model_name: "gpt-5.2-pro"
+    litellm_params:
+      model: "gpt-5.2-pro"
+      api_key: "os.environ/OPENAI_API_KEY"
+
+  - model_name: "deepseek-r1"
+    litellm_params:
+      model: "deepseek/deepseek-r1"
+      api_key: "os.environ/DEEPSEEK_API_KEY"
+
+  - model_name: "deepseek-v3"
+    litellm_params:
+      model: "deepseek/deepseek-chat"
+      api_key: "os.environ/DEEPSEEK_API_KEY"
+
+  - model_name: "gemini-2.5-pro"
+    litellm_params:
+      model: "gemini/gemini-2.5-pro"
+      api_key: "os.environ/GOOGLE_API_KEY"
+
+# General settings
+general_settings:
+  master_key: "os.environ/LITELLM_MASTER_KEY"
+  database_url: "sqlite:////app/data/litellm.db"
+
+litellm_settings:
+  # Budget enforcement
+  max_budget: 200.0           # Monthly hard cap ($200)
+  budget_duration: "1mo"
+
+  # Semantic caching
+  cache: true
+  cache_params:
+    type: "local"
+    similarity_threshold: 0.92
+
+  # Prompt caching (Anthropic)
+  use_client_side_cache_control: true
+
+  # Drop unsupported params instead of erroring
+  drop_params: true
+
+  # Cost tracking
+  success_callback: ["cost_tracking"]
+
+  # Logging
+  json_logs: true
+
+router_settings:
+  routing_strategy: "cost-based-routing"
+  num_retries: 3
+  retry_after: 5
+  timeout: 120
+  allowed_fails: 2
+
+# Budget limits enforced per virtual key
+# Set in environment/runtime, not hardcoded here
+# LITELLM_BUDGET_PER_RUN=15.00
+# LITELLM_BUDGET_PER_DAY=20.00

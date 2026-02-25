@@ -1,0 +1,167 @@
+# AI Factory — Model Registry
+# All calls go through LiteLLM proxy — never direct API calls
+# NLSpec Section: CLAUDE.md Model Registry
+
+models:
+  # Chief Architect — Architecture, planning, complex analysis, editorial
+  claude_opus:
+    litellm_id: "claude-opus-4-6"
+    provider: "anthropic"
+    role: "Chief Architect"
+    use_for:
+      - architecture
+      - planning
+      - complex_analysis
+      - editorial
+      - spec_writing
+      - board_review_chair
+    avoid_for:
+      - bulk_tasks
+      - simple_extraction
+    cost_per_1k_input: 0.015
+    cost_per_1k_output: 0.075
+    context_window: 200000
+
+  # Senior Engineer — Code generation, mid-complexity analysis
+  claude_sonnet:
+    litellm_id: "claude-sonnet-4-5"
+    provider: "anthropic"
+    role: "Senior Engineer"
+    use_for:
+      - code_generation
+      - triage
+      - compliance
+      - mid_complexity_analysis
+      - daily_report_summary
+    avoid_for:
+      - deepest_reasoning
+    cost_per_1k_input: 0.003
+    cost_per_1k_output: 0.015
+    context_window: 200000
+
+  # Junior Worker — Collection, tagging, formatting
+  claude_haiku:
+    litellm_id: "claude-haiku-4-5"
+    provider: "anthropic"
+    role: "Junior Worker"
+    use_for:
+      - collection
+      - tagging
+      - formatting
+      - simple_extraction
+      - bridge_intent_classification
+    avoid_for:
+      - complex_reasoning
+      - editorial
+    cost_per_1k_input: 0.00025
+    cost_per_1k_output: 0.00125
+    context_window: 200000
+
+  # VP of QA — Stress-testing, adversarial review
+  gpt5_pro:
+    litellm_id: "gpt-5.2-pro"
+    provider: "openai"
+    role: "VP of QA"
+    use_for:
+      - stress_testing
+      - adversarial_review
+      - alternative_reasoning
+      - board_review_adversarial
+    avoid_for:
+      - primary_implementation
+    cost_per_1k_input: 0.010
+    cost_per_1k_output: 0.030
+    context_window: 128000
+
+  # Cost Optimizer — Bug finding, verification, cheap review
+  deepseek_r1:
+    litellm_id: "deepseek/deepseek-r1"
+    provider: "deepseek"
+    role: "Cost Optimizer"
+    use_for:
+      - bug_finding
+      - verification
+      - edge_cases
+      - code_review
+      - board_review_cost_auditor
+    avoid_for:
+      - primary_design
+      - editorial
+    cost_per_1k_input: 0.00055
+    cost_per_1k_output: 0.00219
+    context_window: 65536
+
+  # Bulk Processor — High-volume processing, summarization
+  deepseek_v3:
+    litellm_id: "deepseek/deepseek-chat"
+    provider: "deepseek"
+    role: "Bulk Processor"
+    use_for:
+      - high_volume_processing
+      - summarization
+      - routine_code_implementation
+    avoid_for:
+      - quality_critical_output
+    cost_per_1k_input: 0.00027
+    cost_per_1k_output: 0.00110
+    context_window: 65536
+
+  # Multimodal — Video/audio, long-context docs
+  gemini_pro:
+    litellm_id: "gemini/gemini-2.5-pro"
+    provider: "google"
+    role: "Multimodal"
+    use_for:
+      - video_audio_processing
+      - long_context_documents
+      - board_review_integration
+    avoid_for:
+      - architecture
+      - editorial
+    cost_per_1k_input: 0.00125
+    cost_per_1k_output: 0.00500
+    context_window: 1000000
+
+# Routing rules (decision tree from CLAUDE.md)
+routing:
+  design_architecture:
+    primary: claude_opus
+    review: gpt5_pro
+
+  code_implementation_complex:
+    primary: claude_sonnet
+
+  code_implementation_routine:
+    primary: deepseek_v3
+    review: deepseek_r1
+
+  editorial_writing:
+    primary: claude_opus
+    fallback: claude_sonnet
+
+  data_collection:
+    primary: claude_haiku
+    fallback: deepseek_v3
+
+  triage_scoring:
+    primary: claude_sonnet
+
+  compliance_check:
+    primary: claude_sonnet
+    review: deepseek_r1
+
+  board_review:
+    chair: claude_opus
+    adversarial: gpt5_pro
+    cost_auditor: deepseek_r1
+    integration: gemini_pro
+
+  bridge_intent_classification:
+    primary: claude_haiku
+
+  daily_report_summary:
+    primary: claude_sonnet
+    max_cost: 0.05
+
+# Rule: NEVER have same model build AND review
+same_model_build_review: false

@@ -1,0 +1,137 @@
+# The LLM Report — Source Configuration
+# NLSpec Section 3
+
+tier1:
+  # Polled every run (Mon/Wed/Fri/Sat)
+  - name: "OpenAI Blog"
+    type: rss
+    url: "https://openai.com/blog/rss/"
+    tier: 1
+    enabled: true
+
+  - name: "OpenAI API Changelog"
+    type: web
+    url: "https://platform.openai.com/docs/changelog"
+    tier: 1
+    enabled: true
+
+  - name: "Anthropic Blog"
+    type: rss
+    url: "https://www.anthropic.com/news"
+    tier: 1
+    enabled: true
+
+  - name: "Anthropic Models Changelog"
+    type: web
+    url: "https://docs.anthropic.com/en/docs/about-claude/models"
+    tier: 1
+    enabled: true
+
+  - name: "Google DeepMind Blog"
+    type: rss
+    url: "https://deepmind.google/discover/blog/"
+    tier: 1
+    enabled: true
+
+  - name: "Google AI Blog"
+    type: rss
+    url: "https://blog.google/technology/ai/"
+    tier: 1
+    enabled: true
+
+tier2:
+  # Polled every run (Mon/Wed/Fri/Sat)
+  - name: "DeepSeek GitHub"
+    type: github
+    url: "https://github.com/deepseek-ai"
+    tier: 2
+    enabled: true
+
+  - name: "Meta AI Blog"
+    type: rss
+    url: "https://ai.meta.com/blog/"
+    tier: 2
+    enabled: true
+
+  - name: "Meta Llama GitHub"
+    type: github
+    url: "https://github.com/meta-llama"
+    tier: 2
+    enabled: true
+
+  - name: "StrongDM Factory"
+    type: web
+    url: "https://factory.strongdm.ai"
+    tier: 2
+    enabled: true
+
+  - name: "OpenClaw GitHub"
+    type: github
+    url: "https://github.com/openclaw/openclaw"
+    tier: 2
+    enabled: true
+
+tier3:
+  # Polled Friday and Saturday runs only
+  - name: "Mistral AI News"
+    type: web
+    url: "https://mistral.ai/news/"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]  # Friday=4, Saturday=5 (0=Monday)
+
+  - name: "Qwen / Alibaba GitHub"
+    type: github
+    url: "https://github.com/QwenLM"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]
+
+  - name: "Hugging Face Trending Models"
+    type: api
+    url: "https://huggingface.co/api/models?sort=trending&limit=20"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]
+
+  - name: "arXiv cs.AI Recent"
+    type: api
+    url: "https://arxiv.org/list/cs.AI/recent"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]
+
+  - name: "Simon Willison's Weblog"
+    type: rss
+    url: "https://simonwillison.net/atom/everything/"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]
+
+  - name: "LLM Stats News"
+    type: web
+    url: "https://llm-stats.com/ai-news"
+    tier: 3
+    enabled: true
+    run_days: [4, 5]
+
+# Collection settings
+settings:
+  timeout_seconds: 30
+  max_retries: 3
+  retry_delay_seconds: 5
+  user_agent: "TheLLMReport/1.0 (+https://theLLMreport.com/about)"
+  # GitHub API rate limit: 5000/hr with auth, 60/hr without
+  github_use_auth: true
+  # Conditional fetching: skip unchanged RSS feeds
+  use_etag_caching: true
+  # Auto-tag patterns before LLM calls
+  regex_tags:
+    model_release: ["new model", "release", "launch", "introduces", "announcing", "v[0-9]", "gpt-[0-9]", "claude-[0-9]", "gemini-[0-9]"]
+    api_update: ["api update", "new endpoint", "api change", "deprecat", "rate limit"]
+    security_patch: ["security", "vulnerability", "CVE-", "patch", "exploit"]
+    acquisition: ["acqui", "merger", "acquired", "buys", "purchase"]
+    partnership: ["partner", "collaboration", "agreement", "joint"]
+    research_paper: ["paper", "research", "study", "arxiv", "benchmark"]
+    framework_release: ["framework", "library", "sdk", "toolkit", "open source"]
+    pricing_change: ["pricing", "cost", "price", "free tier", "subscription"]

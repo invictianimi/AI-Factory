@@ -1,0 +1,111 @@
+# The LLM Report — Editorial Configuration
+
+voice:
+  style: "reuters_ars_technica"
+  tone: "dry, precise, authoritative"
+  person: "third"
+  tense: "past_for_events_present_for_analysis"
+  reading_level: "professional_technical"
+
+content_structure:
+  lead_story:
+    min_words: 400
+    max_words: 800
+    requires_multiple_sources: true
+
+  standard_story:
+    min_words: 200
+    max_words: 500
+
+  brief:
+    min_words: 80
+    max_words: 200
+
+  weekly_roundup:
+    min_items: 3
+    max_items: 8
+    words_per_item: 60
+
+  analysis_section:
+    label: "Analysis"  # Must be clearly demarcated
+    requires_attribution: true
+    allowed_speculation: true  # Only within Analysis sections
+
+compliance:
+  # Copyright rules
+  max_quoted_words: 14
+  require_attribution: true
+  no_reproduced_code_blocks: true
+
+  # Prohibited content
+  prohibited_phrases:
+    - "revolutionary"
+    - "game-changing"
+    - "groundbreaking"
+    - "unprecedented"
+    - "amazing"
+    - "incredible"
+    - "stunning"
+
+  # Promotional language triggers rewrite
+  promotional_patterns:
+    - "the best"
+    - "world-class"
+    - "industry-leading"
+    - "state of the art"  # OK in technical context, flagged if in editorial voice
+
+  rewrite:
+    max_loops: 3
+    require_failure_reason: true
+
+schedule:
+  standard_runs:
+    days: [0, 2, 4]  # Monday=0, Wednesday=2, Friday=4
+    time_utc: "05:00"
+  deep_dive_runs:
+    days: [5]  # Saturday=5
+    time_utc: "06:00"
+
+newsletter:
+  subject_prefix: ""  # No prefix, just the headline
+  preheader_length: 100
+  include_unsubscribe: true  # CAN-SPAM compliance via Buttondown
+  draft_mode: true  # Override to false after Boss approves first few
+
+sections:
+  - name: "This Week's Lead"
+    required: true
+    story_count: 1
+    tier_minimum: 7  # Only significance 7+ gets lead slot
+
+  - name: "Model Updates"
+    required: false
+    story_count: "2-4"
+    categories: ["model-release", "api-update"]
+
+  - name: "Industry Moves"
+    required: false
+    story_count: "1-3"
+    categories: ["acquisition", "partnership", "policy-regulatory"]
+
+  - name: "Tools & Frameworks"
+    required: false
+    story_count: "1-3"
+    categories: ["framework-release", "methodology"]
+
+  - name: "Research Roundup"
+    required: false
+    story_count: "2-5"
+    categories: ["research-paper", "benchmark"]
+    tier: 3  # Primarily from Friday Tier 3 sources
+
+  - name: "Quick Hits"
+    required: false
+    story_count: "3-8"
+    significance_range: [4, 6]
+    format: "brief"
+
+  - name: "Analysis"
+    required: true
+    format: "analysis_section"
+    label_required: true  # MUST be labeled "Analysis" or "Industry Outlook"

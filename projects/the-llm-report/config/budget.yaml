@@ -1,0 +1,43 @@
+# The LLM Report — Budget Configuration
+# All values in USD
+
+caps:
+  per_run: 15.00
+  per_day: 20.00
+  per_month: 200.00
+  build_phase_total: 50.00  # One-time build budget
+
+anomaly:
+  # Pause if current run cost exceeds 2x the rolling average run cost
+  threshold_multiplier: 2.0
+  rolling_window_runs: 10  # Number of previous runs to compute average
+
+alert_thresholds:
+  # Percentage of each cap that triggers an alert
+  warning: 50
+  critical: 80
+  exceeded: 100
+
+# Per-stage cost targets (informational, not hard caps)
+stage_targets:
+  collection: 0.10     # Mostly regex/structured, minimal LLM
+  triage: 0.50         # Sonnet scoring 20-40 items
+  deduplication: 0.00  # Local-only, no LLM
+  analysis: 3.00       # Opus synthesis, KB-first
+  editorial: 2.00      # Opus/Sonnet prose generation
+  compliance: 0.50     # Sonnet compliance check
+  publishing: 0.00     # Deterministic, no LLM
+  board_review_weekly: 2.00   # 10% of $20 weekly budget
+  board_review_monthly: 3.00  # 15% of $20 weekly budget
+  daily_report_summary: 0.05  # Sonnet executive summary cap
+
+# Cost optimization settings
+optimization:
+  semantic_cache_enabled: true
+  cache_ttl_days_factual: 7
+  cache_ttl_days_news: 1
+  cache_similarity_threshold: 0.92
+  kb_context_injection: true
+  prompt_caching_enabled: true
+  batch_api_enabled: false  # Enable after validation
+  run_schedule_days_per_week: 4  # Mon/Wed/Fri + Sat

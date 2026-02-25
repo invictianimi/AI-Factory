@@ -1,0 +1,73 @@
+version: '3.9'
+
+services:
+  # LiteLLM proxy — handles all LLM routing and budget enforcement
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: aifactory-litellm
+    restart: unless-stopped
+    ports:
+      - "4000:4000"  # Internal only — not exposed externally
+    volumes:
+      - ./orchestrator/config/litellm_config.yaml:/app/config.yaml:ro
+      - ./projects/the-llm-report/data:/app/data
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+    command: ["--config", "/app/config.yaml", "--port", "4000", "--host", "0.0.0.0"]
+    networks:
+      - factory-internal
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  # Main factory pipeline container
+  factory:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: aifactory-pipeline
+    restart: unless-stopped
+    depends_on:
+      - litellm
+    volumes:
+      - ..:/app
+      - /home/aifactory/AI-Factory/.env:/app/.env:ro
+    environment:
+      - LITELLM_PROXY_URL=http://litellm:4000
+      - PYTHONPATH=/app
+    env_file:
+      - ../.env
+    networks:
+      - factory-internal
+      - factory-external
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 7G
+
+networks:
+  # Internal network — factory ↔ LiteLLM only
+  factory-internal:
+    driver: bridge
+    internal: true
+
+  # External network — factory → internet (allowlisted domains enforced at app level)
+  factory-external:
+    driver: bridge
+
+# Allowed external connections (enforced at application level, not network level):
+# api.anthropic.com, api.openai.com, api.deepseek.com
+# generativelanguage.googleapis.com
+# github.com, api.github.com
+# registry.npmjs.org, pypi.org, files.pythonhosted.org
+# api.buttondown.com
+# porkbun.com/api
+# smtp-mail.outlook.com:587
+# + news source domains from sources.yaml

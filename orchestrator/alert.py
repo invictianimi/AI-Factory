@@ -1,6 +1,6 @@
 """
 AI Factory — Alert System
-Sends email alerts via Outlook SMTP when failures or threshold breaches occur.
+Sends email alerts via SMTP when failures or threshold breaches occur.
 Only triggers after 3 self-recovery attempts have failed.
 """
 
@@ -10,7 +10,22 @@ import smtplib
 from datetime import datetime, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 from typing import Optional
+
+
+def _load_env() -> dict:
+    """Force-load .env file, overriding any inherited shell environment variables."""
+    env_path = Path(__file__).parent.parent / ".env"
+    env = {}
+    if env_path.exists():
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, _, v = line.partition("=")
+                    env[k.strip()] = v.strip()
+    return env
 
 
 def send_alert(
@@ -20,7 +35,7 @@ def send_alert(
     project_name: str = "The LLM Report",
 ) -> bool:
     """
-    Send an email alert via Outlook SMTP.
+    Send an email alert via SMTP (Gmail or any STARTTLS provider).
 
     Args:
         subject_suffix: Short description (e.g., "Collection stage failed")
@@ -31,12 +46,15 @@ def send_alert(
     Returns:
         True if sent successfully, False otherwise.
     """
-    smtp_host = os.environ.get("SMTP_HOST", "")
-    smtp_port = int(os.environ.get("SMTP_PORT", "587"))
-    smtp_user = os.environ.get("SMTP_USER", "")
-    smtp_pass = os.environ.get("SMTP_PASS", "")
-    alert_from = os.environ.get("ALERT_FROM", smtp_user)
-    alert_to = os.environ.get("ALERT_TO", "")
+    # Force-load from .env to avoid stale shell env vars
+    env = _load_env()
+    smtp_host = env.get("SMTP_HOST", os.environ.get("SMTP_HOST", ""))
+    smtp_port = int(env.get("SMTP_PORT", os.environ.get("SMTP_PORT", "587")))
+    smtp_user = env.get("SMTP_USER", os.environ.get("SMTP_USER", ""))
+    smtp_pass = env.get("SMTP_PASS", os.environ.get("SMTP_PASS", ""))
+    alert_from_addr = env.get("ALERT_FROM", os.environ.get("ALERT_FROM", smtp_user))
+    alert_from_name = env.get("ALERT_FROM_NAME", os.environ.get("ALERT_FROM_NAME", ""))
+    alert_to = env.get("ALERT_TO", os.environ.get("ALERT_TO", ""))
 
     if not all([smtp_host, smtp_user, smtp_pass, alert_to]):
         # Log to stderr but don't crash — alert infrastructure shouldn't kill pipeline
@@ -47,6 +65,10 @@ def send_alert(
             file=sys.stderr,
         )
         return False
+
+    # Format From header with optional display name: "AI-Factory <addr@domain.com>"
+    from email.utils import formataddr
+    alert_from = formataddr((alert_from_name, alert_from_addr)) if alert_from_name else alert_from_addr
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     subject = f"[AI-FACTORY] [{severity}] {subject_suffix}"

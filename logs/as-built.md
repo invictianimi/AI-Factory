@@ -145,3 +145,39 @@ Built the editorial and compliance pipeline stages per NLSpec Section 5.5/5.6.
 
 **Build:** 8 pages, 0 errors, 771ms.
 
+
+**[INFO 2026-02-25T11:00:02+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Pipeline run started (standard)
+
+**[INFO 2026-02-25T11:00:02+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Collection (standard)
+
+**[INFO 2026-02-25T11:00:02+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Collection started: 11 sources (standard)
+
+**[WARNING 2026-02-25T11:00:17+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Collection error (after 3 attempts) — OpenAI Blog: ConnectionError: HTTP 403 from https://openai.com/blog/rss/
+
+**[WARNING 2026-02-25T11:00:32+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Collection error (after 3 attempts) — OpenAI API Changelog: ConnectionError: HTTP 403 from https://platform.openai.com/docs/changelog
+
+**[INFO 2026-02-25T11:00:48+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Collection complete: 17 new, 0 skipped, 2 errors
+
+**[INFO 2026-02-25T11:00:48+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Triage (17 items)
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Triage: 0 lead, 0 story, 0 roundup, 0 archived
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Deduplication (0 items)
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Dedup: 0 story groups
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Analysis (0 groups)
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Editorial (0 stories)
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Compliance (0 articles)
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** No compliant articles — producing minimal edition
+
+**[INFO 2026-02-25T11:00:50+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Stage: Publishing (0 articles)
+
+**[INFO 2026-02-25T11:00:51+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-25.md
+
+**[INFO 2026-02-25T11:00:52+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff]]** Newsletter draft created: 81ae6264-0653-4d4f-92b3-5ed1ac9119dd
+
+**[INFO 2026-02-25T11:00:52+00:00 [run:1764b782-1867-42d1-917a-726efe8270ff] [cost:$0.0000]]** Pipeline run complete — Collected: 17 | Published: 0 | Errors: 5

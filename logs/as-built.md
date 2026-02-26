@@ -249,3 +249,73 @@ LiteLLM proxy was not running. `_call_triage_llm` tried to connect to `http://lo
 **[INFO 2026-02-26T20:56:21+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Newsletter draft created: 6f8a30ec-bde1-418c-9647-773c9640c9f6
 
 **[INFO 2026-02-26T20:56:21+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb] [cost:$0.0000]]** Pipeline run complete — Collected: 7 | Published: 0 | Errors: 0
+
+**[INFO 2026-02-26T21:00:21+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Pipeline run started (standard)
+
+**[INFO 2026-02-26T21:00:21+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Collection (standard)
+
+**[INFO 2026-02-26T21:00:21+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Collection started: 9 sources (standard)
+
+**[INFO 2026-02-26T21:00:37+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Collection complete: 0 new, 7 skipped, 0 errors
+
+**[INFO 2026-02-26T21:00:37+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Recovered 27 untriaged items from previous runs
+
+**[INFO 2026-02-26T21:00:37+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Triage (27 items)
+
+**[INFO 2026-02-26T21:02:12+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Triage: 3 lead, 0 story, 3 roundup, 21 archived
+
+**[INFO 2026-02-26T21:02:12+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Deduplication (6 items)
+
+**[INFO 2026-02-26T21:02:13+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Dedup: 6 story groups
+
+**[INFO 2026-02-26T21:02:13+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Analysis (6 groups)
+
+**[INFO 2026-02-26T21:02:41+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Editorial (0 stories)
+
+**[INFO 2026-02-26T21:02:41+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Compliance (0 articles)
+
+**[INFO 2026-02-26T21:02:41+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** No compliant articles — producing minimal edition
+
+**[INFO 2026-02-26T21:02:41+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Stage: Publishing (0 articles)
+
+**[WARNING 2026-02-26T21:02:41+00:00]** Website publish error: Command '['git', 'add', '/home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md']' returned non-zero exit status 128.
+
+**[INFO 2026-02-26T21:02:41+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md
+
+**[INFO 2026-02-26T21:02:42+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985]]** Newsletter draft created: de0ca34e-90ab-4f5b-8adc-1e105de1584f
+
+**[INFO 2026-02-26T21:02:42+00:00 [run:71a8b0b3-1b91-4e87-bb95-8c73a57e3985] [cost:$0.0000]]** Pipeline run complete — Collected: 0 | Published: 0 | Errors: 3
+
+**[INFO 2026-02-26T21:03:48+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Pipeline run started (standard)
+
+**[INFO 2026-02-26T21:03:48+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Collection (standard)
+
+**[INFO 2026-02-26T21:03:48+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Collection started: 9 sources (standard)
+
+**[INFO 2026-02-26T21:04:00+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Collection complete: 0 new, 7 skipped, 0 errors
+
+**[INFO 2026-02-26T21:04:00+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Recovered 6 untriaged items from previous runs
+
+**[INFO 2026-02-26T21:04:00+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Triage (6 items)
+
+**[INFO 2026-02-26T21:04:25+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Triage: 3 lead, 0 story, 2 roundup, 1 archived
+
+**[INFO 2026-02-26T21:04:25+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Deduplication (5 items)
+
+**[INFO 2026-02-26T21:04:26+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Dedup: 5 story groups
+
+**[INFO 2026-02-26T21:04:26+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Analysis (5 groups)
+
+**[INFO 2026-02-26T21:05:20+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Editorial (5 stories)
+
+**[INFO 2026-02-26T21:07:02+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Compliance (5 articles)
+
+**[INFO 2026-02-26T21:07:02+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Stage: Publishing (5 articles)
+
+**[WARNING 2026-02-26T21:07:02+00:00]** Website publish error: Command '['git', 'add', '/home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md']' returned non-zero exit status 128.
+
+**[INFO 2026-02-26T21:07:02+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md
+
+**[INFO 2026-02-26T21:07:04+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Newsletter draft created: 5e81b4e8-f7d9-44c7-9d5b-9a992ee3cd48
+
+**[INFO 2026-02-26T21:07:04+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250] [cost:$0.0000]]** Pipeline run complete — Collected: 0 | Published: 5 | Errors: 0

@@ -58,7 +58,15 @@ def run(run_type: str = "standard") -> int:
         collection_result = run_collection(run_state, run_type=run_type)
         run_state.errors.extend(collection_result.errors)
 
-        if not collection_result.items_new:
+        # Recover untriaged items from recent failed runs (last 3 days)
+        untriaged_from_db = get_untriaged_items(days=3)
+        new_ids = {item.id for item in collection_result.items_new}
+        recovered = [item for item in untriaged_from_db if item.id not in new_ids]
+        if recovered:
+            log(f"Recovered {len(recovered)} untriaged items from previous runs", run_id=run_state.run_id)
+        triage_input = collection_result.items_new + recovered
+
+        if not triage_input:
             log("No new items collected — producing minimal edition", run_id=run_state.run_id)
 
         # Budget gate
@@ -70,8 +78,8 @@ def run(run_type: str = "standard") -> int:
             return 2
 
         # 2. TRIAGE
-        log(f"Stage: Triage ({len(collection_result.items_new)} items)", run_id=run_state.run_id)
-        triaged, triage_errors = triage_batch(collection_result.items_new)
+        log(f"Stage: Triage ({len(triage_input)} items)", run_id=run_state.run_id)
+        triaged, triage_errors = triage_batch(triage_input)
         run_state.items_triaged = len(triaged)
         run_state.errors.extend(triage_errors)
 
@@ -80,6 +88,21 @@ def run(run_type: str = "standard") -> int:
         log(f"Triage: {len(buckets['lead'])} lead, {len(buckets['story'])} story, "
             f"{len(buckets['roundup'])} roundup, {len(buckets['archive'])} archived",
             run_id=run_state.run_id)
+
+        # Write triage scores back to DB so these items are not re-triaged in future runs
+        for t in triaged:
+            try:
+                update_item_significance(t.item.id, float(t.significance), t.promoted)
+            except Exception:
+                pass
+        # Mark archived-by-triage items with score=0 so they're excluded from future recovery
+        for item in triage_input:
+            if not any(t.item.id == item.id for t in triaged):
+                # Item was dropped (e.g., due to max_errors cutoff) — mark as attempted
+                try:
+                    update_item_significance(item.id, 0.0, False)
+                except Exception:
+                    pass
 
         # Budget gate
         can_continue, reason = check_budget_gate(run_state.run_id, "analysis")

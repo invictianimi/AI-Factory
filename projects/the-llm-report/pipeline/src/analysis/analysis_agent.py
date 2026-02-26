@@ -161,11 +161,18 @@ def analyze_story(
         if sup.item.url not in sources:
             sources.append(sup.item.url)
 
+    # Coerce key_details to str — LLM occasionally returns a dict or list
+    raw_key_details = result.get("key_details", "")
+    if isinstance(raw_key_details, dict):
+        raw_key_details = "\n".join(f"{k}: {v}" for k, v in raw_key_details.items())
+    elif isinstance(raw_key_details, list):
+        raw_key_details = "\n".join(str(x) for x in raw_key_details)
+
     return AnalyzedStory(
         group=group,
         what_happened=result.get("what_happened", ""),
         why_it_matters=result.get("why_it_matters", ""),
-        key_details=result.get("key_details", ""),
+        key_details=raw_key_details,
         sources=sources,
         single_source_claims=result.get("single_source_claims", []),
         analysis_angles=result.get("analysis_angles", [])[:2],

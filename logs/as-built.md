@@ -215,3 +215,37 @@ LiteLLM proxy was not running. `_call_triage_llm` tried to connect to `http://lo
 - Systemd service: active (running) ✓
 
 **[INFO 2026-02-25 — Bug fix complete]** Next pipeline run will triage and publish real articles.
+
+**[INFO 2026-02-26T20:55:44+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Pipeline run started (standard)
+
+**[INFO 2026-02-26T20:55:44+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Collection (standard)
+
+**[INFO 2026-02-26T20:55:44+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Collection started: 9 sources (standard)
+
+**[INFO 2026-02-26T20:55:56+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Collection complete: 7 new, 10 skipped, 0 errors
+
+**[INFO 2026-02-26T20:55:56+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Triage (7 items)
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Triage: 0 lead, 0 story, 0 roundup, 7 archived
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Deduplication (0 items)
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Dedup: 0 story groups
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Analysis (0 groups)
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Editorial (0 stories)
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Compliance (0 articles)
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** No compliant articles — producing minimal edition
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Stage: Publishing (0 articles)
+
+**[WARNING 2026-02-26T20:56:19+00:00]** Website publish error: Command '['git', 'add', '/home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md']' returned non-zero exit status 128.
+
+**[INFO 2026-02-26T20:56:19+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-26.md
+
+**[INFO 2026-02-26T20:56:21+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb]]** Newsletter draft created: 6f8a30ec-bde1-418c-9647-773c9640c9f6
+
+**[INFO 2026-02-26T20:56:21+00:00 [run:f53109f9-68cd-4d16-874c-b916f09feccb] [cost:$0.0000]]** Pipeline run complete — Collected: 7 | Published: 0 | Errors: 0

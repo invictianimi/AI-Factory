@@ -31,7 +31,7 @@ def run(run_type: str = "standard") -> int:
     Returns exit code: 0 = success, 1 = error, 2 = budget exceeded.
     """
     from pipeline.src.models import RunState
-    from pipeline.src.kb.store import start_run, complete_run
+    from pipeline.src.kb.store import start_run, complete_run, get_untriaged_items, update_item_significance
     from pipeline.src.collect.collector import run_collection
     from pipeline.src.triage.triage_agent import triage_batch, filter_triaged
     from pipeline.src.triage.dedup import deduplicate

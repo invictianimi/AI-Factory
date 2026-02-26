@@ -6,7 +6,7 @@ Uses conditional requests (ETag) to avoid re-fetching unchanged data.
 
 from __future__ import annotations
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import requests
@@ -18,6 +18,7 @@ GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 TIMEOUT = int(os.environ.get("COLLECTION_TIMEOUT", "30"))
 USER_AGENT = "TheLLMReport/1.0 (+https://thellmreport.com/about)"
 MAX_RELEASES = 5  # Per repo per run
+MAX_AGE_DAYS = 7  # Ignore releases older than this
 
 _etag_cache: dict[str, str] = {}
 
@@ -108,6 +109,10 @@ def _fetch_repo_releases(source_name: str, repo: str, source_url: str, tier: int
                 ).astimezone(timezone.utc)
             except Exception:
                 pass
+
+        # Skip releases older than MAX_AGE_DAYS
+        if published_at and published_at < datetime.now(timezone.utc) - timedelta(days=MAX_AGE_DAYS):
+            continue
 
         item = CollectedItem(
             source_name=source_name,

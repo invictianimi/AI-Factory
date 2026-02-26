@@ -304,6 +304,54 @@ def store_published_article(
         conn.commit()
 
 
+def get_untriaged_items(days: int = 3) -> list[CollectedItem]:
+    """
+    Return items collected in the last N days that have never been triaged
+    (significance_score IS NULL). Used to recover items from runs where
+    triage failed (e.g., LiteLLM was down).
+    """
+    with _conn() as conn:
+        rows = conn.execute(
+            """
+            SELECT * FROM source_items
+            WHERE significance_score IS NULL
+              AND collected_at >= datetime('now', ?)
+            ORDER BY source_tier ASC, collected_at DESC
+            """,
+            (f"-{days} days",),
+        ).fetchall()
+
+    items = []
+    for r in rows:
+        try:
+            published_at = None
+            if r["published_at"]:
+                try:
+                    published_at = datetime.fromisoformat(r["published_at"]).astimezone(timezone.utc)
+                except Exception:
+                    pass
+            collected_at = datetime.fromisoformat(r["collected_at"]).astimezone(timezone.utc)
+
+            item = CollectedItem(
+                id=r["id"],
+                source_name=r["source_name"],
+                source_tier=r["source_tier"],
+                url=r["url"],
+                title=r["title"],
+                raw_content=r["raw_content"],
+                published_at=published_at,
+                collected_at=collected_at,
+                tags=json.loads(r["tags"] or "[]"),
+                significance_score=None,
+                promoted=bool(r["promoted"]),
+            )
+            items.append(item)
+        except Exception:
+            continue
+
+    return items
+
+
 def get_model_info(name: str) -> Optional[dict]:
     """Get stored metadata for an AI model."""
     with _conn() as conn:

@@ -7,13 +7,13 @@ tier1:
     type: rss
     url: "https://openai.com/blog/rss/"
     tier: 1
-    enabled: true
+    enabled: false  # HTTP 403 — blocks scrapers; find working alternative
 
   - name: "OpenAI API Changelog"
     type: web
     url: "https://platform.openai.com/docs/changelog"
     tier: 1
-    enabled: true
+    enabled: false  # HTTP 403 — blocks scrapers; find working alternative
 
   - name: "Anthropic Blog"
     type: rss

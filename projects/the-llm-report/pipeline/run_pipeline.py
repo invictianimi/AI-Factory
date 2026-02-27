@@ -42,6 +42,7 @@ def run(run_type: str = "standard") -> int:
     from pipeline.src.publish.buttondown_publisher import (
         publish_newsletter_draft, markdown_to_html, build_subject
     )
+    from pipeline.src.publish.x_publisher import post_edition as x_post_edition
     from pipeline.src.publish.cost_control import check_budget_gate, get_run_cost_report
     from orchestrator.as_built import log_run_start, log_run_complete, log, log_error
     from orchestrator.alert import alert_pipeline_failure, alert_budget_threshold
@@ -185,6 +186,20 @@ def run(run_type: str = "standard") -> int:
             log(f"Buttondown publish failed (non-fatal): {e}", level="WARNING",
                 run_id=run_state.run_id)
             run_state.errors.append(f"Newsletter: {e}")
+
+        # 7c. X/Twitter — only post when real articles published
+        if compliant_articles:
+            headline = compliant_articles[0].title if compliant_articles else f"Edition {edition_date}"
+            x_result = x_post_edition(
+                edition_date=edition_date,
+                headline=headline,
+                article_count=len(compliant_articles),
+            )
+            if x_result["posted"]:
+                log(f"X/Twitter posted: {x_result['tweet_id']}", run_id=run_state.run_id)
+            else:
+                log(f"X/Twitter post failed (non-fatal): {x_result.get('error', 'unknown')}",
+                    level="WARNING", run_id=run_state.run_id)
 
         # Final cost report
         cost_report = get_run_cost_report(run_state.run_id)

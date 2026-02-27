@@ -83,33 +83,41 @@ def publish_to_website(
 
     if not dry_run:
         try:
+            # Build a safe subprocess env: inherit current env but ensure HOME and SSH config
+            # are always set correctly (cron has a minimal env that can miss these)
+            git_env = os.environ.copy()
+            git_env.setdefault("HOME", str(Path.home()))
+            git_env["GIT_SSH_COMMAND"] = (
+                f"ssh -F {Path.home() / '.ssh' / 'config'} -o BatchMode=yes"
+            )
+
             # Ensure git identity is set for this repo
             subprocess.run(["git", "config", "user.email", "aifactory.ops@outlook.com"],
-                           cwd=str(ws_dir), capture_output=True, timeout=10)
+                           cwd=str(ws_dir), capture_output=True, timeout=10, env=git_env)
             subprocess.run(["git", "config", "user.name", "AI Factory"],
-                           cwd=str(ws_dir), capture_output=True, timeout=10)
+                           cwd=str(ws_dir), capture_output=True, timeout=10, env=git_env)
             # Git add
             subprocess.run(
                 ["git", "add", str(file_path)],
-                cwd=str(ws_dir), capture_output=True, check=True, timeout=30
+                cwd=str(ws_dir), capture_output=True, check=True, timeout=30, env=git_env
             )
             # Git commit
             commit_result = subprocess.run(
                 ["git", "commit", "-m",
                  f"content(edition): {edition_date} edition [run:{run_id[:8]}]"],
-                cwd=str(ws_dir), capture_output=True, text=True, timeout=30
+                cwd=str(ws_dir), capture_output=True, text=True, timeout=30, env=git_env
             )
             # Extract commit SHA
             if commit_result.returncode == 0:
                 sha_result = subprocess.run(
                     ["git", "rev-parse", "--short", "HEAD"],
-                    cwd=str(ws_dir), capture_output=True, text=True, timeout=10
+                    cwd=str(ws_dir), capture_output=True, text=True, timeout=10, env=git_env
                 )
                 commit_sha = sha_result.stdout.strip()
             # Git push — triggers Cloudflare Pages auto-deploy
             push_result = subprocess.run(
                 ["git", "push"],
-                cwd=str(ws_dir), capture_output=True, text=True, timeout=60
+                cwd=str(ws_dir), capture_output=True, text=True, timeout=60, env=git_env
             )
             push_success = push_result.returncode == 0
             if not push_success:

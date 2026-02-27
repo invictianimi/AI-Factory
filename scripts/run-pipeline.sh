@@ -10,6 +10,14 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RUN_TYPE="${1:-standard}"
 LOG_FILE="$REPO_ROOT/logs/pipeline-run.log"
 
+# Prevent concurrent runs — only one pipeline instance at a time
+LOCK_FILE="/tmp/ai-factory-pipeline.lock"
+exec 200>"$LOCK_FILE"
+if ! flock -n 200; then
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Pipeline already running (lock held) — exiting" | tee -a "$LOG_FILE"
+  exit 0
+fi
+
 # Load environment
 if [ -f "$REPO_ROOT/.env" ]; then
   export $(grep -v '^#' "$REPO_ROOT/.env" | xargs)

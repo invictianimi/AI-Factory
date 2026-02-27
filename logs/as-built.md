@@ -389,3 +389,19 @@ and the repository exis
 **[WARNING 2026-02-27T11:00:52+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Buttondown publish failed (non-fatal): Buttondown API returned 400: {"code":"email_invalid","detail":"{'__all__': ['Constraint “slug_uniqueness” is violated.']}","metadata":{}}
 
 **[INFO 2026-02-27T11:00:52+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6] [cost:$0.0000]]** Pipeline run complete — Collected: 1 | Published: 1 | Errors: 1
+
+**[DECISION 2026-02-27T22:30:31+00:00]** Bug Fix: Pipeline lock
+
+> Added flock to run-pipeline.sh — prevents duplicate concurrent pipeline runs. Second invocation now exits immediately with logged message.
+
+**[DECISION 2026-02-27T22:32:42+00:00]** Bug Fix: Website git push hardened
+
+> Cleaned duplicate Host github.com-website block from ~/.ssh/config (kept id_ed25519_website). Publisher now sets GIT_SSH_COMMAND with explicit -F config path and BatchMode=yes so git push works reliably in cron environment. Root cause of push failures was concurrent runs (fixed by pipeline lock).
+
+**[DECISION 2026-02-27T22:33:08+00:00]** Issue 3 Verified: SMTP already working
+
+> SMTP was previously failing on Outlook SmtpClientAuthentication. Config was already updated to smtp.gmail.com (Gmail App Password). Test send confirmed: Result True. No code changes needed.
+
+**[DECISION 2026-02-27T22:39:46+00:00]** Queued Tasks Run (2026-02-27)
+
+> Task 4 (Cloudflare Pages): Already live at thellmreport.com — confirmed active deployment. Task 5 (Substack): No API exists; RSS import approach selected — Boss must configure in Substack settings pointing to https://thellmreport.com/rss.xml. Task 6 (X/Twitter): x_publisher.py built, wired into run_pipeline.py. App credentials valid but Read-only — Boss must enable Read+Write in Twitter Developer Portal and regenerate access tokens.

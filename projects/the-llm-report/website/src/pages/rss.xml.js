@@ -1,20 +1,19 @@
 // RSS Feed — The LLM Report
-// Generated dynamically from the editions content collection
+import { getCollection } from 'astro:content';
 
 const SITE_URL = 'https://thellmreport.com';
 
 export async function GET() {
-  // In production: import editions from content collection
-  // For now: minimal valid RSS feed
-  const editions = [];
+  const allEditions = await getCollection('editions');
+  const editions = allEditions.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
-  const items = editions.map(ed => `
+  const items = editions.map(entry => `
     <item>
-      <title><![CDATA[${ed.title}]]></title>
-      <link>${SITE_URL}/editions/${ed.slug}/</link>
-      <guid isPermaLink="true">${SITE_URL}/editions/${ed.slug}/</guid>
-      <pubDate>${new Date(ed.date).toUTCString()}</pubDate>
-      <description><![CDATA[${ed.description || ''}]]></description>
+      <title><![CDATA[${entry.data.title}]]></title>
+      <link>${SITE_URL}/editions/${entry.slug}/</link>
+      <guid isPermaLink="true">${SITE_URL}/editions/${entry.slug}/</guid>
+      <pubDate>${new Date(entry.data.date + 'T12:00:00Z').toUTCString()}</pubDate>
+      <description><![CDATA[${entry.data.description || ''}]]></description>
     </item>`
   ).join('');
 
@@ -32,8 +31,6 @@ export async function GET() {
 </rss>`;
 
   return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-    },
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
   });
 }

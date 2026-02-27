@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Edition from '../../layouts/Edition.astro';
+
+export async function getStaticPaths() {
+  const editions = await getCollection('editions');
+  return editions.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const wordCount = entry.body.split(/\s+/).length;
+const readTime = Math.max(1, Math.round(wordCount / 200)) + ' min';
+
+// Count stories: number of ## headings (excluding "Roundup" meta-sections)
+const storyCount = (entry.body.match(/^## /gm) || []).length;
+---
+
+<Edition
+  title={entry.data.title}
+  date={entry.data.date}
+  description={entry.data.description}
+  readTime={readTime}
+>
+  <Content />
+</Edition>

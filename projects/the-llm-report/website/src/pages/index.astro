@@ -1,18 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
-// In production: populated from the editions content collection
-// Each entry: { slug, date, title, description, readTime, storyCount }
-const editions = [
-  {
-    slug: '2026-02-25',
-    date: '2026-02-25',
-    title: 'The LLM Report — February 25, 2026',
-    description: 'Factory launch edition. The autonomous pipeline is live. First real run coming Friday February 28.',
-    readTime: '2 min',
-    storyCount: 3,
-  },
-];
+const allEditions = await getCollection('editions');
+const editions = allEditions
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .map(entry => {
+    const wordCount = entry.body.split(/\s+/).length;
+    const readTime = Math.max(1, Math.round(wordCount / 200)) + ' min';
+    const storyCount = (entry.body.match(/^## /gm) || []).length || null;
+    return {
+      slug: entry.slug,
+      date: entry.data.date,
+      title: entry.data.title,
+      description: entry.data.description || '',
+      readTime,
+      storyCount,
+    };
+  });
 
 const latest = editions[0];
 const past = editions.slice(1);

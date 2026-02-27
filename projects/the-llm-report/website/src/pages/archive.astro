@@ -1,11 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
-const editions = []; // Populated by pipeline at publish time
+const allEditions = await getCollection('editions');
+const editions = allEditions
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .map(entry => ({
+    slug: entry.slug,
+    date: entry.data.date,
+    title: entry.data.title,
+    description: entry.data.description || '',
+  }));
+
+const parseDate = (d: string) => new Date(d + 'T12:00:00Z');
 ---
 
 <Base
-  title="Archive"
+  title="Archive — The LLM Report"
   description="All editions of The LLM Report — AI industry intelligence."
 >
   <div class="container">
@@ -13,11 +24,20 @@ const editions = []; // Populated by pipeline at publish time
     <p>All editions of The LLM Report, in reverse chronological order.</p>
 
     {editions.length > 0 ? (
-      <ul class="edition-list">
-        {editions.map((ed: any) => (
+      <ul class="edition-list" style="margin-top: 2rem;">
+        {editions.map(ed => (
           <li>
-            <a href={`/editions/${ed.slug}`}>{ed.title}</a>
-            <span class="edition-date">{ed.date}</span>
+            <a href={`/editions/${ed.slug}`} class="edition-card">
+              <div>
+                <div class="edition-card-title">{ed.title}</div>
+                {ed.description && (
+                  <div class="text-xs text-muted mt-1">{ed.description}</div>
+                )}
+              </div>
+              <div class="edition-card-meta">
+                <span>{parseDate(ed.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>
+              </div>
+            </a>
           </li>
         ))}
       </ul>

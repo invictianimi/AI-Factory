@@ -319,3 +319,73 @@ LiteLLM proxy was not running. `_call_triage_llm` tried to connect to `http://lo
 **[INFO 2026-02-26T21:07:04+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250]]** Newsletter draft created: 5e81b4e8-f7d9-44c7-9d5b-9a992ee3cd48
 
 **[INFO 2026-02-26T21:07:04+00:00 [run:b68aa8bf-45c2-4cc5-b250-a64ff9a69250] [cost:$0.0000]]** Pipeline run complete — Collected: 0 | Published: 5 | Errors: 0
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Pipeline run started (standard)
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Pipeline run started (standard)
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Collection (standard)
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Collection started: 9 sources (standard)
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Collection (standard)
+
+**[INFO 2026-02-27T11:00:01+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Collection started: 9 sources (standard)
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Collection complete: 1 new, 6 skipped, 0 errors
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Recovered 1 untriaged items from previous runs
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Triage (2 items)
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Collection complete: 1 new, 6 skipped, 0 errors
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Recovered 1 untriaged items from previous runs
+
+**[INFO 2026-02-27T11:00:16+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Triage (2 items)
+
+**[INFO 2026-02-27T11:00:25+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Triage: 0 lead, 0 story, 2 roundup, 0 archived
+
+**[INFO 2026-02-27T11:00:25+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Deduplication (2 items)
+
+**[INFO 2026-02-27T11:00:25+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Dedup: 1 story groups
+
+**[INFO 2026-02-27T11:00:25+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Analysis (1 groups)
+
+**[INFO 2026-02-27T11:00:26+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Triage: 0 lead, 0 story, 2 roundup, 0 archived
+
+**[INFO 2026-02-27T11:00:26+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Deduplication (2 items)
+
+**[INFO 2026-02-27T11:00:26+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Dedup: 1 story groups
+
+**[INFO 2026-02-27T11:00:26+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Analysis (1 groups)
+
+**[INFO 2026-02-27T11:00:36+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Editorial (1 stories)
+
+**[INFO 2026-02-27T11:00:36+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Editorial (1 stories)
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Compliance (1 articles)
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Stage: Publishing (1 articles)
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Compliance (1 articles)
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Stage: Publishing (1 articles)
+
+**[WARNING 2026-02-27T11:00:50+00:00]** Website push failed: ssh: Could not resolve hostname github.com-website: Name or service not known
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exis
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-27.md
+
+**[INFO 2026-02-27T11:00:50+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-27.md
+
+**[INFO 2026-02-27T11:00:51+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2]]** Newsletter draft created: c4b355c9-0602-4f62-82d8-ea51cb335a08
+
+**[INFO 2026-02-27T11:00:51+00:00 [run:520e0602-6920-44f1-a953-4dd1623cb3c2] [cost:$0.0000]]** Pipeline run complete — Collected: 1 | Published: 1 | Errors: 0
+
+**[WARNING 2026-02-27T11:00:52+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6]]** Buttondown publish failed (non-fatal): Buttondown API returned 400: {"code":"email_invalid","detail":"{'__all__': ['Constraint “slug_uniqueness” is violated.']}","metadata":{}}
+
+**[INFO 2026-02-27T11:00:52+00:00 [run:e494082a-3ee0-48e0-97c0-5ea02c8c54f6] [cost:$0.0000]]** Pipeline run complete — Collected: 1 | Published: 1 | Errors: 1

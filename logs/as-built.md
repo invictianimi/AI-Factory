@@ -405,3 +405,59 @@ and the repository exis
 **[DECISION 2026-02-27T22:39:46+00:00]** Queued Tasks Run (2026-02-27)
 
 > Task 4 (Cloudflare Pages): Already live at thellmreport.com — confirmed active deployment. Task 5 (Substack): No API exists; RSS import approach selected — Boss must configure in Substack settings pointing to https://thellmreport.com/rss.xml. Task 6 (X/Twitter): x_publisher.py built, wired into run_pipeline.py. App credentials valid but Read-only — Boss must enable Read+Write in Twitter Developer Portal and regenerate access tokens.
+
+**[INFO 2026-02-28T11:00:01+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Pipeline run started (deep-dive)
+
+**[INFO 2026-02-28T11:00:01+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Collection (deep-dive)
+
+**[INFO 2026-02-28T11:00:01+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Collection started: 15 sources (deep-dive)
+
+**[WARNING 2026-02-28T11:00:37+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Collection error (after 3 attempts) — Hugging Face Trending Models: ConnectionError: HTTP 400 from https://huggingface.co/api/models?sort=trending&limit=20
+
+**[INFO 2026-02-28T11:00:40+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Collection complete: 38 new, 7 skipped, 1 errors
+
+**[INFO 2026-02-28T11:00:40+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Triage (38 items)
+
+**[INFO 2026-02-28T11:02:41+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Triage: 4 lead, 8 story, 16 roundup, 10 archived
+
+**[INFO 2026-02-28T11:02:42+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Deduplication (28 items)
+
+**[INFO 2026-02-28T11:02:47+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Dedup: 27 story groups
+
+**[INFO 2026-02-28T11:02:47+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Analysis (27 groups)
+
+**[INFO 2026-02-28T11:07:51+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Editorial (27 stories)
+
+**[INFO 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Compliance (27 articles)
+
+**[WARNING 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Compliance failed for 'Willison Argues AI Agents Have Made Writ': ["First person 'we' found in article"]
+
+**[WARNING 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Compliance failed for 'Most OpenAI Users Don't Pay and Barely U': ['Quote exceeds 14 words (32 words): "If people are only using this a couple of times a week at most, and can\'t think ..."']
+
+**[WARNING 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Compliance failed for 'Essay Explores How Generational Divides ': ["Promotional phrase: 'amazing'"]
+
+**[INFO 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Stage: Publishing (27 articles)
+
+**[WARNING 2026-02-28T11:15:45+00:00]** Website push failed: Can't open user config file /root/.ssh/config: No such file or directory
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+
+**[INFO 2026-02-28T11:15:45+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Published to website: /home/aifactory/AI-Factory/projects/the-llm-report/website/src/content/editions/2026-02-28.md
+
+**[INFO 2026-02-28T11:15:47+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Newsletter draft created: 98d41aa2-47eb-46f9-81ce-bbc135950712
+
+**[ERROR 2026-02-28T11:15:47+00:00 [run:09f0bc88-7006-4b32-9505-6eec322d7ab4]]** Pipeline failed
+
+```
+Traceback (most recent call last):
+  File "/home/aifactory/AI-Factory/projects/the-llm-report/pipeline/run_pipeline.py", line 192, in run
+    headline = compliant_articles[0].title if compliant_articles else f"Edition {edition_date}"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aifactory/AI-Factory/.venv/lib/python3.12/site-packages/pydantic/main.py", line 1026, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'EditedArticle' object has no attribute 'title'
+
+```
